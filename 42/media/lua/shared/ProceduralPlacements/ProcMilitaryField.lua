@@ -1,0 +1,28 @@
+BanditProc = BanditProc or {}
+
+function BanditProc.MilitaryField (sx, sy, sz)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_59", sx + 1, sy + 1, sz + 0)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_58", sx + 1, sy + 2, sz + 0)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_57", sx + 1, sy + 3, sz + 0)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_56", sx + 1, sy + 4, sz + 0)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_63", sx + 4, sy + 1, sz + 0)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_62", sx + 4, sy + 2, sz + 0)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_60", sx + 4, sy + 4, sz + 0)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_44", sx + 7, sy + 1, sz + 0)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_44", sx + 7, sy + 4, sz + 0)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_45", sx + 8, sy + 1, sz + 0)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_45", sx + 8, sy + 4, sz + 0)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_46", sx + 9, sy + 1, sz + 0)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_46", sx + 9, sy + 4, sz + 0)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_47", sx + 10, sy + 1, sz + 0)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_47", sx + 10, sy + 4, sz + 0)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_51", sx + 1, sy + 1, sz + 1)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_50", sx + 1, sy + 2, sz + 1)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_49", sx + 1, sy + 3, sz + 1)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_48", sx + 1, sy + 4, sz + 1)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_55", sx + 4, sy + 1, sz + 1)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_54", sx + 4, sy + 2, sz + 1)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_53", sx + 4, sy + 3, sz + 1)
+	BanditBasePlacements.IsoObject ("location_military_generic_01_52", sx + 4, sy + 4, sz + 1)
+
+end

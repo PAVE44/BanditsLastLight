@@ -1,0 +1,11 @@
+name=Bandits Last Light
+poster=poster.png
+icon=icon.png
+id=BanditsLastLight
+description=<H1><GREEN>BANDITS LAST LIGHT B42 
+description=<BR>
+description= Extract the VIP with the cure for Knox Virus. 
+description=<BR>
+require=\Bandits2
+incompatible=\BanditsWeekOne,\BanditsDayOne
+author=Slayer

@@ -1,0 +1,110 @@
+module Bandits{
+
+    sound BLL_M2_Fire {
+        category = Object, 
+        loop = false
+        is3D = true,
+        clip { 
+            file = media/sound/m2-fire2.ogg,
+            distanceMin = 1,
+            distanceMax = 40, 
+            reverbFactor = 0.1, volume = 0.7, 
+        } 
+    }
+
+    sound BLL_ExploClose1 {
+        category = Object, 
+        loop = false,
+        is3D = true,
+        clip { 
+            file = media/sound/explo-close-1.wav, 
+            distanceMax = 100,
+            reverbFactor = 0.1, 
+            volume = 1, 
+        } 
+    }
+
+    sound BLL_ExploClose2 {
+        category = Object, 
+        loop = false,
+        is3D = true,
+        clip { 
+            file = media/sound/explo-close-2.wav, 
+            distanceMax = 100,
+            reverbFactor = 0.1, 
+            volume = 1, 
+        } 
+    }
+
+    sound BLL_ExploClose3 {
+        category = Object, 
+        loop = false,
+        is3D = true,
+        clip { 
+            file = media/sound/explo-close-3.wav, 
+            distanceMax = 100,
+            reverbFactor = 0.1, 
+            volume = 1, 
+        } 
+    }
+
+    sound BLL_ExploClose4 {
+        category = Object, 
+        loop = false,
+        is3D = true,
+        clip { 
+            file = media/sound/explo-close-4.wav, 
+            distanceMax = 100,
+            reverbFactor = 0.1, 
+            volume = 1, 
+        } 
+    }
+
+    sound BLL_ExploClose5 {
+        category = Object, 
+        loop = false,
+        is3D = true,
+        clip { 
+            file = media/sound/explo-close-5.wav, 
+            distanceMax = 100,
+            reverbFactor = 0.1, 
+            volume = 1, 
+        } 
+    }
+
+    sound BLL_ExploClose6 {
+        category = Object, 
+        loop = false,
+        is3D = true,
+        clip { 
+            file = media/sound/explo-close-6.wav, 
+            distanceMax = 100,
+            reverbFactor = 0.1, 
+            volume = 1, 
+        } 
+    }
+
+    sound BLL_ExploClose7 {
+        category = Object, 
+        loop = false,
+        is3D = true,
+        clip { 
+            file = media/sound/explo-close-7.wav, 
+            distanceMax = 100,
+            reverbFactor = 0.1, 
+            volume = 1, 
+        } 
+    }
+
+    sound BLL_ExploClose8 {
+        category = Object, 
+        loop = false,
+        is3D = true,
+        clip { 
+            file = media/sound/explo-close-8.wav, 
+            distanceMax = 100,
+            reverbFactor = 0.1, 
+            volume = 1, 
+        } 
+    }
+}
