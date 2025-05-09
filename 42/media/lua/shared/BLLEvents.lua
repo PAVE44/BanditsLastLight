@@ -5,9 +5,7 @@ BLLEvents.VehicleSpawn = function(params)
 end
 
 BLLEvents.SetVar = function(params)
-    if BLLVars[params.key] then
-        BLLVars[params.key] = params.val
-    end
+    BLLVars.Set(params.key, params.val)
 end
 
 BLLEvents.FadeOut = function(params)

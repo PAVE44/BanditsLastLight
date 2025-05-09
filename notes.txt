@@ -1,0 +1,261 @@
+
+welcome to <base name> captain <player name>
+
+Major <name> is expecting you in his quarters
+
+
+[report to major <name>]
+
+    MAJOR 
+Talk to Major
+Captain, the situation is critical, we are losing every battle, the knox county is overrun by this things.
+
+We will be able to hold this place  for as a long we are able to hold the LV bridge closed. 
+I was going to blow it to buy Kentucky more time but apparently
+there is some VIP  that the general wants us to recover from that shithole
+
+
+Captain, i want to you to get there, get the vip and bring the VIP back here alive
+unfortunatelly we lost 2 blackhawks yesterday and i dont have any birds to get you there cap, 
+so you 're in for a ride through the streets of LV
+i'll give you most of my man and all the gear you need
+understand that this is a high risk and high reward mission
+you are allowed to use any means necessary to accomplish the mission
+
+Tell me more about the VIP
+The target whose probable location is the LV hostital
+He is classified as a citical priority, 
+seems that has has some insight how to undo this mess. 
+We do not have any intel whether the vip is even alive, but we have orders to investigate 
+
+Tell me more about my men
+I'm givving you Baker Company, 4 squards of 7 men
+Best of the best
+I suggest you talk with the Liutenant and staff seargants
+
+When does the mission start
+It's you call, the sooner the better.
+
+chat with mechanic
+
+who are you
+i am pvt <name> mechanic
+
+what are your orders
+prepping of M113 armoured vehicles for the mission
+
+Report vehicle status
+the M113 armourced aPCs armour is iun pristine condition. 
+
+What about 
+
+What is the vehice 
+the browning M2 is not a toy, 
+
+
+
+---
+
+CONCCEPTS:
+
+soldiers have their teams assigned
+soldiers have their ids assigned
+when guardposts are disignated each soldier has his own guardpost
+if soldier dies, the ids are renumerated, guardposts are regenerated
+this is important for circle formation where we want to keep even distribution for example
+leaders are marked, only they affirm commands
+
+
+AI TEAMS HAVE DIFF PROGS
+RAVEN 1 FRONT
+LEFT
+RIGHT BEHIND
+
+
+THE POINTER 
+
+YOU DESIGNSTE THE POINT
+GUARDPOST ARE DESIGNATED AROUND THAT POINT
+SIMULATING FORMATION
+
+-------------------------+--------------+-----------+-------------+
+ ALL                     | RAVEN ONE(7) | GHOST TWO | COMMAND (make good name)
+-------------------------+--------------+-----------+-------------+
+[][]  [][]  [][][] [] [] |              |           |  [][][][][] |
+-------------------------+--------------+-----------+-------------+
+
+teams sohuld merge automatically when combatants die
+
+1 - weapon hold
+2 - weapon free
+
+3 - follow leader
+4 - stay put, start cursor
+
+5 - column formation
+6 - line formation
+7 - defensive formation
+8 - embark transporter (toggle)
+
+9 - status report
+
+command:
+strafing run
+supply drop
+gas drop
+bomb drop
+(support cooldown in tooltip)
+
+
+V-RADIAL
+
+ALL TEAMS
+TEAM 1
+TEAM 2
+TEAM 3
+TEAM 4
+
+
+ON ME
+
+TAKE POSITION >
+    - CURSOR
+
+lets the player place the cursor and that generates guardposts depending on a formation
+the number of guardposts reflects the current team size
+if the formation is circle then if the team is small they should be evenly distributed
+
+FORMATION >
+    - LINE
+    - FILE
+    - WEDGE
+    - CIRCLE
+
+changes the assigned formation
+
+now if the guardpost is placed it removes all guardposts for that team and places new ones depending on a new formation structure
+
+if no guardpost is set for the team it uses the formation to follow the player
+
+WEAPONS
+    - FREE
+    - HOLD
+
+changes the weapons bit (will need to modify bandits for this one)
+
+EMBARK / DISEMBARK
+
+
+STATUS
+
+this invokes the teamlead to report the status of the squad
+which is team size 
+the amount of enemies (should say it's clear or we have multiple enemies) 
+and ammunition status
+
+
+RELIEVE
+    - CONFIRM
+
+changes the program to lonely squad
+
+
+
+spoeech system
+
+target inbound
+target north, northeast etc (when spotted)
+they are close (when in hearing distance)
+threat eliminated, daed, goodbye, just another one, tango down, zed is dead, 
+man down 
+repositioning
+
+
+Enemy sighted! 
+Contact!! 
+Visual on hostiles! 
+Enemy target spotted! 
+Got eyes on the enemy! 
+Hostiles spotted!.
+
+North! 
+North East!
+East!
+South East!
+South!
+South-West!
+West!
+North-west!
+
+Target down!
+Enemy neutralized!
+Confirmed kill!
+One down, a few more to go!
+That’s another one!
+Zed down!
+Zed is dead!
+Hostile neutralized!
+Zombie dispatched!
+Zombie taken out!
+Undead neutralized!
+Bye-bye!
+
+we've got a man down!
+man down! man down!
+soldier down!
+We've lost one!
+we've got a casualty!
+medic!
+
+
+"Fall back! zeds closing in!"
+"Retreat! We can’t hold this position!"
+"We’re overrun! Time to move!"
+"It's getting hot! regroup!"
+"Zombies everywhere! Shifting our position!"
+"Let's get out of here, now!"
+"Time to bail! They’re swarming us!"
+"Move to the fallback point—now!"
+
+
+disembark!
+disembarking!
+disembarking the vehicle!
+squad disembarking!
+squad getting off!
+
+embark!
+embarking!
+embarking the vehicle!
+squad embarking!
+squad getting on!
+
+
+moving to position!
+affirmative!
+moving on!
+changing position!
+copy that!
+got it!
+
+position reached!
+we're here!
+target reached!
+in place and ready!
+new position reached!
+we have arrived!
+
+line formation!
+form line formation!
+file formation!
+form column formation!
+circle formation!
+defensive formation!
+
+
+Strafing run inbound! E.T.A. 3 minutes!
+Coordinates received! E.T.A 3 minutes!
+Bird away! E.T.A 3 minutes!
+Supplies underway! E.T.A. 3 minutes!
+Sending supplies! E.T.A 3 minutes!
+Dropping supplies! E.T.A 3 minutes!

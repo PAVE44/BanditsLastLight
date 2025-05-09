@@ -88,7 +88,7 @@ local function manageDriver(square, vehicle)
         end
         if vehicle:isStopped() then
             vehicle:setRegulator(true)
-            vehicle:setRegulatorSpeed(BLLVars.convoySpeed)
+            vehicle:setRegulatorSpeed(BLLVars.Get("convoySpeed"))
         end
     end
 
