@@ -1,0 +1,64 @@
+[9bbcac62-ac56-46db-912b-b8dc35e182d2]
+	general: name = Viper_One
+	spawn: friendly = true
+	spawn: companion = false
+	spawn: defenders = false
+	spawn: campers = false
+	spawn: assault = false
+	spawn: wanderer = false
+	spawn: roadblock = false
+	spawn: dayStart = 1
+	spawn: dayEnd = 10000
+	spawn: spawnChance = 0
+	spawn: groupMin = 7
+	spawn: groupMax = 7
+	spawn: zone = 0
+
+[c9c8780f-1d32-43f5-a51f-5210db5890ad]
+	general: name = Raven_Two
+	spawn: friendly = true
+	spawn: companion = false
+	spawn: defenders = false
+	spawn: campers = false
+	spawn: assault = false
+	spawn: wanderer = false
+	spawn: roadblock = false
+	spawn: dayStart = 0
+	spawn: dayEnd = 10000
+	spawn: spawnChance = 0.1
+	spawn: groupMin = 1
+	spawn: groupMax = 32
+	spawn: zone = 0
+
+[938d9643-935e-4a9c-b963-ff174c2124d8]
+	general: name = Iron_Three
+	spawn: friendly = true
+	spawn: companion = false
+	spawn: defenders = false
+	spawn: campers = false
+	spawn: assault = false
+	spawn: wanderer = false
+	spawn: roadblock = false
+	spawn: dayStart = 0
+	spawn: dayEnd = 10000
+	spawn: spawnChance = 0.1
+	spawn: groupMin = 1
+	spawn: groupMax = 32
+	spawn: zone = 0
+
+[a6718ac2-2a78-40c1-a61f-04cde31145c6]
+	general: name = Shadow_Four
+	spawn: friendly = true
+	spawn: companion = false
+	spawn: defenders = false
+	spawn: campers = false
+	spawn: assault = false
+	spawn: wanderer = false
+	spawn: roadblock = false
+	spawn: dayStart = 0
+	spawn: dayEnd = 10000
+	spawn: spawnChance = 0.1
+	spawn: groupMin = 1
+	spawn: groupMax = 32
+	spawn: zone = 0
+

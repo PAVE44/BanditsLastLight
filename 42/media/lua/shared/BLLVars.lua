@@ -16,6 +16,7 @@ BLLVars.Set = function(key, val)
 end
 
 BLLVars.Get = function(key)
+    local test = BLLVars
     return BLLVars.vars[key]
 end
 
@@ -24,7 +25,7 @@ BLLVars.Init = function()
 
     for k, v in pairs(BLLVars.defaultVars) do
         if not globalData[k] then 
-            globalData[v] = v
+            globalData[k] = v
         end
     end
 

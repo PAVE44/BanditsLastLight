@@ -31,6 +31,15 @@ function BLLMenu.Convoy(player)
 end
 
 
+function BLLMenu.CommandPanel(player)
+    local screenWidth, screenHeight = getCore():getScreenWidth(), getCore():getScreenHeight()
+    local modalWidth, modalHeight = 600, 80
+    local modalX = 0
+    local modalY = screenHeight - modalHeight
+    local modal = BLLCommandPanel:new(modalX, modalY, modalWidth, modalHeight)
+    modal:initialise()
+    modal:addToUIManager()
+end
 
 function BLLMenu.WorldContextMenuPre(playerID, context, worldobjects, test)
     local world = getWorld()
@@ -39,6 +48,7 @@ function BLLMenu.WorldContextMenuPre(playerID, context, worldobjects, test)
 
     -- Debug options
     if isDebugEnabled() then
+        context:addOption("Command Panel", player, BLLMenu.CommandPanel)
         context:addOption("Clear", player, BLLMenu.Clear, square)
         context:addOption("Start", player, BLLMenu.Start)
         context:addOption("Convoy", player, BLLMenu.Convoy)

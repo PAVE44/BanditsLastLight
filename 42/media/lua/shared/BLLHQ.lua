@@ -51,8 +51,8 @@ end
 BLLHQ.Update = function()
     local tools = BLLHQ.tools
     for _, tool in pairs(tools) do
-        if tool.coolDown > 0 then
-            tool.coolDown = tool.coolDown - 1
+        if tool.cooldown > 0 then
+            tool.cooldown = tool.cooldown - 1
         end
     end
 end
