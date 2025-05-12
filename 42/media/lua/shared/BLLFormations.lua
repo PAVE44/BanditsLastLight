@@ -4,7 +4,7 @@ local function rotateFormation(formation, angleDegrees)
     local cosA = math.cos(angle)
     local sinA = math.sin(angle)
 
-    for i, point in ipairs(formation) do
+    for _, point in ipairs(formation) do
         local x = point.x
         local y = point.y
 
@@ -20,7 +20,7 @@ BLLFormations = BLLFormations or {}
 
 BLLFormations.line = function(n)
     local formation = {}
-    local m = math.floor(n/2) + 1
+    local m = math.floor(n / 2) + 1
     for i=1, m do
         table.insert(formation, {x=3, y=-i})
         table.insert(formation, {x=3, y=i})
@@ -28,39 +28,28 @@ BLLFormations.line = function(n)
     return formation
 end
 
-BLLFormations.columns = {
-    {x=-2, y=-3},
-    {x=-2, y=-1.5},
-    {x=-2, y=1.5},
-    {x=-2, y=3},
+BLLFormations.file = function(n)
+    local formation = {}
+    for i=1, n do
+        table.insert(formation, {x=-i, y=0})
+    end
+end
 
-    {x=-4, y=-3},
-    {x=-4, y=-1.5},
-    {x=-4, y=1.5},
-    {x=-4, y=3},
-
-    {x=-6, y=-3},
-    {x=-6, y=-1.5},
-    {x=-6, y=1.5},
-    {x=-6, y=3},
-
-    {x=-8, y=-3},
-    {x=-8, y=-1.5},
-    {x=-8, y=1.5},
-    {x=-8, y=3},
-
-    {x=-10, y=-3},
-    {x=-10, y=-1.5},
-    {x=-10, y=1.5},
-    {x=-10, y=3},
-}
+BLLFormations.doublefile = function(n)
+    local formation = {}
+    local m = math.floor(n / 2) + 1
+    for i=1, m do
+        table.insert(formation, {x=-i, y=-1})
+        table.insert(formation, {x=-i, y=1})
+    end
+end
 
 BLLFormations.circle = function(n)
     local formation = {}
     local minRadius = 2
     local maxRadius = 8
     local maxPoints = 28
-    
+
     local t = math.min(n, maxPoints) / maxPoints
     local radius = minRadius + (maxRadius - minRadius) * t
 
@@ -74,10 +63,8 @@ BLLFormations.circle = function(n)
     return formation
 end
 
-
-
 BLLFormations.Get = function (name, angleDegrees)
-    
+
     if not BLLFormations[name] then return end
 
     local formation = BLLFormations[name](21)
