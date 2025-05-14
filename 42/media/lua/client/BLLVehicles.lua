@@ -4,33 +4,61 @@ BLLVehicles = BLLVehicles or {}
 BLLVehicles.speedMin = 2
 BLLVehicles.speedMax = 10
 BLLVehicles.reloadTime = 100
-BLLVehicles.ammoContainerPartName = "" -- fixme
-BLLVehicles.ammoItemTypeName = "" -- fixme
-BLLVehicles.ammoBoxItemTypeName = "" -- fixme
-BLLVehicles.ammoBoxSize = 100 -- fixme
-BLLVehicles.seatNum = 7 -- fixme
-
--- global moddata
-BLLVehicles.vehicles = {}
-BLLVehicles.passengers = {}
+BLLVehicles.ammoContainerPartName = "Browning_M2"
+BLLVehicles.ammoBoxItemTypeName = "Base.127x99mmClip"
+BLLVehicles.seatOptions = {0, 1, 3}
 
 -- temp data
 BLLVehicles.tick = 0
 BLLVehicles.reloadTick = 0
 
+local function getVehicleBack(vehicle, l)
+    local vx = vehicle:getX()
+    local vy = vehicle:getY()
+    local vax = vehicle:getAngleX()
+    local vay = vehicle:getAngleY()
+    local vaz = vehicle:getAngleZ()
+    local vr = calculateVehicleRotation(vax, vay, vaz)
+    local rad = math.rad(vr)
+    local l = 2.5
+    local sx = vx - (l * math.cos(rad)) + ZombRandFloat(-0.5, 0.5)
+    local sy = vy - (l * math.sin(rad)) + ZombRandFloat(-0.5, 0.5)
+    return sx, sy
+end
+
+local function createPassenger(vehicle, seat)
+
+    if not vehicle:getChunk() then return end
+
+    local survDesc = SurvivorFactory.CreateSurvivor(SurvivorType.Neutral, false)
+    survDesc:setForename("Passenger")
+    survDesc:setSurname("Passenger")
+    survDesc:dressInNamedOutfit("Police")
+
+    local square = vehicle:getSquare()
+    local passenger = IsoPlayer.new(square:getCell(), survDesc, square:getX(), square:getY(), square:getZ())
+
+    passenger:setSceneCulled(false)
+    passenger:setNPC(true)
+    passenger:setGodMod(true)
+    passenger:setInvisible(true)
+    passenger:setGhostMode(true)
+
+    local vx = passenger:getForwardDirection():getX()
+    local vy = passenger:getForwardDirection():getY()
+    local forwardVector = Vector3f.new(vx, vy, 0)
+
+    vehicle:setPassenger(seat, passenger, forwardVector)
+    passenger:setVehicle(vehicle)
+    passenger:setCollidable(false)
+
+    if not passenger:getVehicle() then return end
+
+    return passenger
+end
+
 BLLVehicles.Repair = function(vehicle)
-    -- we cant use vehicle:replair() because it will add armor to ki5 vehicles
-
-    for i = 0, vehicle:getPartCount() - 1 do
-        local part = vehicle:getPartByIndex(i)
-        local area = part:getArea()
-
-        if area and not area:embodies("Armor") then
-            local cond = 70 + ZombRand(40)
-            if cond > 100 then cond = 100 end
-            part:setCondition(cond)
-        end
-    end
+    vehicle:repair()
 
     local gasTank = vehicle:getPartById("GasTank")
     if gasTank then
@@ -86,7 +114,10 @@ BLLVehicles.Spawn = function(x, y, dir, btype)
             md.BLL.slot = slot
 
             local id = vehicle:getId()
-            BLLVehicles.vehicles[id] = vehicle
+            BLLVehicles.vehicles[id] = {
+                x = vehicle:getX(), 
+                y = vehicle:getY()
+            }
 
             --[[
             if args.lightbar or args.siren or args.alarm then
@@ -103,17 +134,29 @@ BLLVehicles.Remove = function(vehicle)
     BLLVehicles.DisembarkAll(vehicle)
     vehicle:permanentlyRemove()
     BLLVehicles.vehicles[vid] = nil
+    BLLVehicles.passengers[vid] = nil
 end
 
 BLLVehicles.Embark = function(vehicle, bandit)
     local gmd = GetBanditModData()
 
     -- find first free sit
-    local seatNum = BLLVehicles.seatNum - 1
+    local vid = vehicle:getId()
+    local passengers = BLLVehicles.passengers[vid] or {}
+    local seatOptions = BLLVehicles.seatOptions
     local seat
-    for i=0, seatNum do
+    for _, i in pairs(seatOptions) do
         if vehicle:isSeatInstalled(i) and not vehicle:isSeatOccupied(i) then
-            seat = i
+            local occupied = false
+            for _, seatTaken in pairs(passengers) do
+                if i == seatTaken then
+                    occupied = true
+                end
+            end
+            if not occupied then
+                seat = i
+                break
+            end
         end
     end
 
@@ -130,7 +173,6 @@ BLLVehicles.Embark = function(vehicle, bandit)
     bandit:removeFromWorld()
 
     -- update passenger list
-    local vid = vehicle:getId()
     if not BLLVehicles.passengers[vid] then
         BLLVehicles.passengers[vid] = {}
     end
@@ -151,12 +193,14 @@ BLLVehicles.DisembarkAll = function(vehicle)
                     -- remove passenger
                     local character = vehicle:getCharacter(seat)
                     vehicle:clearPassenger(seat)
-                    character:setVehicle(nil)
-                    character:setCollidable(true)
-                    character:Kill(nil)
-                    character:removeSaveFile()
-                    character:removeFromSquare()
-                    character:removeFromWorld()
+                    if character then
+                        character:setVehicle(nil)
+                        character:setCollidable(true)
+                        character:Kill(nil)
+                        character:removeSaveFile()
+                        character:removeFromSquare()
+                        character:removeFromWorld()
+                    end
 
                     -- restore bandit
                     local ex, ey = getVehicleBack(vehicle, 3)
@@ -189,28 +233,51 @@ local function normalize(angle)
     return angle
 end
 
-local function predicateAmmo(item)
-    if item:getType() == BLLVehicles.ammoItemTypeName then return true end
-    return true
-end
-
 local function predicateAmmoBox(item)
-    if item:getType() == BLLVehicles.ammoBoxItemTypeName then return true end -- fixme
-    return true
+    if item:getFullType() == BLLVehicles.ammoBoxItemTypeName then 
+        if item:getCurrentAmmoCount() > 0 then
+            return true
+        end
+    end
+    return false
 end
 
-local function getVehicleBack(vehicle, l)
-    local vx = vehicle:getX()
-    local vy = vehicle:getY()
-    local vax = vehicle:getAngleX()
-    local vay = vehicle:getAngleY()
-    local vaz = vehicle:getAngleZ()
-    local vr = calculateVehicleRotation(vax, vay, vaz)
-    local rad = math.rad(vr)
-    local l = 2.5
-    local sx = vx - (l * math.cos(rad)) + ZombRandFloat(-0.5, 0.5)
-    local sy = vy - (l * math.sin(rad)) + ZombRandFloat(-0.5, 0.5)
-    return sx, sy
+local function initGlobalModData()
+    local globalData = ModData.getOrCreate("BanditLastLight")
+
+    if not globalData.vehicles then globalData.vehicles = {} end
+    if not globalData.passengers then globalData.passengers = {} end
+
+    BLLVehicles.vehicles = globalData.vehicles
+    BLLVehicles.passengers = globalData.passengers
+end
+
+local function findVehicle(vdata)
+    local cell = getCell()
+
+    local search = {
+        {x = 0, y = 0},
+        {x = 1, y = 0},
+        {x = 1, y = 1},
+        {x = 0, y = 1},
+        {x = -1, y = 1},
+        {x = -1, y = 0},
+        {x = -1, y = -1},
+        {x = 0, y = -1},
+        {x = 1, y = -1},
+    }
+
+    for _, s in pairs(search) do
+        local sx = vdata.x + s.x
+        local sy = vdata.y + s.y
+        local square = cell:getGridSquare(sx, sy, 0)
+        if square then
+            local vehicle = square:getVehicleContainer()
+            if vehicle then
+                return vehicle
+            end
+        end
+    end
 end
 
 local function manageEngineSmoke(vehicle)
@@ -231,14 +298,14 @@ end
 
 local function manageMovement(square, vehicle, driver)
 
-    local vehicleList = BLLVehicles.vehicles
+    local vdataList = BLLVehicles.vehicles
     local vid = vehicle:getId()
     local vx = vehicle:getX()
     local vy = vehicle:getY()
 
     local slot = 1
-    for id, _ in pairs(vehicleList) do
-        if id ~= vid and vehicle:getX() < vx then
+    for id, vdata in pairs(vdataList) do
+        if id ~= vid and vdata.x < vx then
             slot = slot + 1
         end
     end
@@ -255,11 +322,15 @@ local function manageMovement(square, vehicle, driver)
     local tvr = BanditUtils.CalcAngle (vx, vy, target.x, target.y)
     local delta = normalize(normalize(tvr) - normalize(vr))
 
-    if dist < 2 then
+    if not vehicle:isEngineRunning() then
+        vehicle:tryStartEngine(true)
+        vehicle:engineDoStartingSuccess()
+        vehicle:engineDoRunning()
+    elseif dist < 2 then
         vehicle:setRegulator(false)
         vehicle:setRegulatorSpeed(0)
     elseif math.abs(delta) < 2 then
-        local speed = dist / 10
+        local speed = dist / 2
         if speed < BLLVehicles.speedMin then speed = BLLVehicles.speedMin end
         if speed > BLLVehicles.speedMax then speed = BLLVehicles.speedMax end
 
@@ -267,13 +338,11 @@ local function manageMovement(square, vehicle, driver)
         vehicle:setRegulatorSpeed(speed)
         -- print ("vid: " .. vid .. "slot: " .. slot)
     else
-        vehicle:setRegulator(false)
-        vehicle:setRegulatorSpeed(0)
-        if vehicle:isStopped() then
+        vehicle:setRegulator(true)
+        vehicle:setRegulatorSpeed(1)
             local step = (delta > 0) and 1 or -1
             local nva = (90 - normalize(vr + step)) % 360
             vehicle:setAngles(0, nva, 0)
-        end
     end
 
 end
@@ -286,29 +355,31 @@ local function manageTurret(square, vehicle, gunner)
     local cell = square:getCell()
 
     -- manage reload if necessary
-    local ammoItems = ArrayList.new()
-    local ammoContainer = vehicle:getPartById(BLLVehicles.ammoContainerPartName):getItemContainer()
-    ammoContainer:getAllEvalRecurse(predicateAmmo, ammoItems)
-    local ammoLeft = ammoItems:size()
-    if ammoLeft == 0 then
-        local ammoBoxItems = ArrayList.new()
-        ammoContainer:getAllEvalRecurse(predicateAmmoBox, ammoBoxItems)
-        local ammoBoxLeft = ammoBoxItems:size()
-        if ammoBoxLeft > 0 then
+    local firing = false
+    local ammoBox
+    local ammoMax
+    local ammoLeft
+    local ammoBoxItems = ArrayList.new()
+    local ammoPart = vehicle:getPartById(BLLVehicles.ammoContainerPartName)
+    local ammoContainer = ammoPart:getItemContainer()
+    ammoContainer:getAllEvalRecurse(predicateAmmoBox, ammoBoxItems)
+    if ammoBoxItems:size() > 0 then
+        firing = true
+        ammoBox = ammoBoxItems:get(0)
+        ammoMax = ammoBox:getMaxAmmo()
+        ammoLeft = ammoBox:getCurrentAmmoCount()
+        
+        if ammoLeft == ammoMax then -- new clip, needs to load it
+            firing = false
             BLLVehicles.reloadTick = BLLVehicles.reloadTick + 1
             if BLLVehicles.reloadTick == BLLVehicles.reloadTime then
-                ammoContainer:RemoveOneOf(BLLVehicles.ammoBoxItemTypeName, true)
-                local cnt = BLLVehicles.ammoBoxSize
-                for i=1, cnt do
-                    local item = BanditCompatibility.InstanceItem(BLLVehicles.ammoItemTypeName)
-                    ammoContainer:AddItem(item)
-                end
                 BLLVehicles.reloadTick = 0
+                firing = true
             end
         end
     end
 
-    if ammoLeft == 0 then return end
+    if not firing then return end -- out of ammo or reloading
 
     -- detect enemies
     local bestDist = 40
@@ -381,6 +452,8 @@ local function manageTurret(square, vehicle, gunner)
 
     if firing and BLLVehicles.tick % 12 > 0 then
         BanditProjectile.Add(vid, vx, vy, vz, aimAngle, 1)
+        ammoBox:setCurrentAmmoCount(ammoLeft - 1)
+
         local emitter = getWorld():getFreeEmitter(vx, vy, vz)
         emitter:playSound("BLL_M2_Fire")
 
@@ -395,66 +468,46 @@ local function manageTurret(square, vehicle, gunner)
     end
 end
 
-local function createPassenger(vehicle, seat)
-
-    if not vehicle:getChunk() then return end
-
-    local survDesc = SurvivorFactory.CreateSurvivor(SurvivorType.Neutral, false)
-    survDesc:setForename("Passenger")
-    survDesc:setSurname("Passenger")
-    survDesc:dressInNamedOutfit("Police")
-
-    local passenger = IsoPlayer.new(square:getCell(), survDesc, square:getX(), square:getY(), square:getZ())
-
-    passenger:setSceneCulled(false)
-    passenger:setNPC(true)
-    passenger:setGodMod(true)
-    passenger:setInvisible(true)
-    passenger:setGhostMode(true)
-
-    local vx = passenger:getForwardDirection():getX()
-    local vy = passenger:getForwardDirection():getY()
-    local forwardVector = Vector3f.new(vx, vy, 0)
-
-    vehicle:setPassenger(1, passenger, forwardVector)
-    passenger:setVehicle(vehicle)
-    passenger:setCollidable(false)
-
-    if not passenger:getVehicle() then return end
-
-    return passenger
-end
-
 local function manage(ticks)
 
     BLLVehicles.tick = ticks
+    local test = BLLVehicles
+    initGlobalModData()
 
     if ticks % 6 > 0 then return end
 
     local player = getSpecificPlayer(0)
     if not player then return end
 
-    local vehicleList = BLLVehicles.vehicles
-    for vid, vehicle in pairs(vehicleList) do
-        local controller = vehicle:getController()
-        if not controller then
-            BLLVehicles.vehicles[vid] = nil
+    local vdataList = BLLVehicles.vehicles
+    for vid, vdata in pairs(vdataList) do
+
+        local vehicle = findVehicle(vdata)
+        if not vehicle then 
+            -- BLLVehicles.vehicles[vid] = nil
             break
         end
 
-        local square = vehicle:getSquare()
-        if not square then return end
+        local controller = vehicle:getController()
+        if not controller then
+            -- BLLVehicles.vehicles[vid] = nil
+            break
+        end
 
         -- update passanger after game reload
-        local passengers = BLLVehicles.passengers[vid]
+        local passengers = BLLVehicles.passengers[vid] or {}
         for bid, seat in pairs(passengers) do
             if not vehicle:getCharacter(seat) then
-                createPassenger(vehicle, seat)
+                if vehicle:isSeatInstalled(seat) and not vehicle:isSeatOccupied(seat) then
+                    createPassenger(vehicle, seat)
+                end
             end
         end
 
         -- engine smoke
         manageEngineSmoke(vehicle)
+
+        local square = vehicle:getSquare()
 
         local driver = vehicle:getDriver()
         if driver and driver:isNPC() then
@@ -465,15 +518,13 @@ local function manage(ticks)
         if gunner and gunner:isNPC() then
             manageTurret(square, vehicle, gunner)
         end
+
+        -- update gmd
+        vdataList[vid] = {
+            x = vehicle:getX(), 
+            y = vehicle:getY()
+        }
     end
-end
-
-local function initGlobalModData()
-    local globalData = ModData.getOrCreate("BanditLastLight")
-
-    BLLVehicles.vehicles = globalData.vehicles
-    BLLVehicles.passengers = globalData.passengers
-
 end
 
 Events.OnInitGlobalModData.Add(initGlobalModData)

@@ -35,6 +35,26 @@ function BLLMenu.VehicleSpawn(player, square)
     BLLQueueManager.Add("VehicleSpawn", apc, 2200)
 end
 
+function BLLMenu.VehicleRemove(player, vehicle)
+    BLLVehicles.Remove(vehicle)
+end
+
+function BLLMenu.VehicleEmbark(player, vehicle, bandit)
+
+    local cacheLightB = BanditZombie.CacheLightB
+    local cache = BanditZombie.Cache
+    for _, bandit in pairs(cacheLightB) do
+        if bandit.brain.cid == "9bbcac62-ac56-46db-912b-b8dc35e182d2" then
+            local soldier = cache[bandit.brain.id]
+            BLLVehicles.Embark(vehicle, soldier)
+        end
+    end
+end
+
+function BLLMenu.VehicleDisembark(player, vehicle)
+    BLLVehicles.DisembarkAll(vehicle)
+end
+
 function BLLMenu.CommandPanel(player)
     local screenWidth, screenHeight = getCore():getScreenWidth(), getCore():getScreenHeight()
     local modalWidth, modalHeight = 600, 80
@@ -49,10 +69,17 @@ function BLLMenu.WorldContextMenuPre(playerID, context, worldobjects, test)
     local world = getWorld()
     local player = getSpecificPlayer(playerID)
     local square = BanditCompatibility.GetClickedSquare()
+    local vehicle = square:getVehicleContainer()
 
     -- Debug options
     if isDebugEnabled() then
         context:addOption("Vehicle Spawn", player, BLLMenu.VehicleSpawn, square)
+        if vehicle then
+            context:addOption("Vehicle Embark", player, BLLMenu.VehicleEmbark, vehicle)
+            context:addOption("Vehicle Disembark", player, BLLMenu.VehicleDisembark, vehicle)
+            context:addOption("Vehicle Remove", player, BLLMenu.VehicleRemove, vehicle)
+        end
+
         context:addOption("Command Panel", player, BLLMenu.CommandPanel)
         context:addOption("Clear", player, BLLMenu.Clear, square)
         context:addOption("Start", player, BLLMenu.Start)

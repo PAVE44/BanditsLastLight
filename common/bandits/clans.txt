@@ -10,8 +10,8 @@
 	spawn: dayStart = 1
 	spawn: dayEnd = 10000
 	spawn: spawnChance = 0
-	spawn: groupMin = 7
-	spawn: groupMax = 7
+	spawn: groupMin = 1
+	spawn: groupMax = 1
 	spawn: zone = 0
 
 [c9c8780f-1d32-43f5-a51f-5210db5890ad]
