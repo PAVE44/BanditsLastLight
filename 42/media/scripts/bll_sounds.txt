@@ -8,7 +8,7 @@ module Bandits{
             file = media/sound/m2-fire2.ogg,
             distanceMin = 1,
             distanceMax = 40, 
-            reverbFactor = 0.1, volume = 0.7, 
+            reverbFactor = 0.1, volume = 0.6, 
         } 
     }
 
