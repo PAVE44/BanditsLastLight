@@ -30,6 +30,10 @@ function BLLMenu.Convoy(player)
     BLLEvents.SetVar({key="convoySpeed", val=12})
 end
 
+function BLLMenu.VehicleSpawn(player, square)
+    local apc = {x=square:getX(), y=square:getY(), dir=IsoDirections.S, vtype="Base.M113_APC"}
+    BLLQueueManager.Add("VehicleSpawn", apc, 2200)
+end
 
 function BLLMenu.CommandPanel(player)
     local screenWidth, screenHeight = getCore():getScreenWidth(), getCore():getScreenHeight()
@@ -48,6 +52,7 @@ function BLLMenu.WorldContextMenuPre(playerID, context, worldobjects, test)
 
     -- Debug options
     if isDebugEnabled() then
+        context:addOption("Vehicle Spawn", player, BLLMenu.VehicleSpawn, square)
         context:addOption("Command Panel", player, BLLMenu.CommandPanel)
         context:addOption("Clear", player, BLLMenu.Clear, square)
         context:addOption("Start", player, BLLMenu.Start)
@@ -69,4 +74,14 @@ function BLLMenu.WorldContextMenuPre(playerID, context, worldobjects, test)
     end
 end
 
+function BLLMenu.OnKeyPressed(keynum)
+    if keynum == BanditCompatibility.GetGuardpostKey() then
+        local playerObj = getSpecificPlayer(0)
+        local cursor = BLLCursor:new("vehicle", 4)
+        getCell():setDrag(cursor, playerObj:getPlayerNum())
+    end
+end
+
 Events.OnPreFillWorldObjectContextMenu.Add(BLLMenu.WorldContextMenuPre)
+Events.OnKeyPressed.Remove(BanditMenu.OnKeyPressed)
+Events.OnKeyPressed.Add(BLLMenu.OnKeyPressed)
