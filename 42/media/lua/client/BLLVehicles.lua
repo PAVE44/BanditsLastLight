@@ -395,7 +395,7 @@ local function manageTurret(square, vehicle, gunner)
     end
 end
 
-local function createPassenger (vehicle, seat)
+local function createPassenger(vehicle, seat)
 
     if not vehicle:getChunk() then return end
 
@@ -425,7 +425,7 @@ local function createPassenger (vehicle, seat)
     return passenger
 end
 
-local manage = function(ticks)
+local function manage(ticks)
 
     BLLVehicles.tick = ticks
 
@@ -468,7 +468,7 @@ local manage = function(ticks)
     end
 end
 
-initGlobalModData= function()
+local function initGlobalModData()
     local globalData = ModData.getOrCreate("BanditLastLight")
 
     BLLVehicles.vehicles = globalData.vehicles
