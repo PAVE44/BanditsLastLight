@@ -8,8 +8,13 @@ BLLVehicles.ammoContainerPartName = "" -- fixme
 BLLVehicles.ammoItemTypeName = "" -- fixme
 BLLVehicles.ammoBoxItemTypeName = "" -- fixme
 BLLVehicles.ammoBoxSize = 100 -- fixme
+BLLVehicles.seatNum = 7 -- fixme
 
-BLLVehicles.tab = {}
+-- global moddata
+BLLVehicles.vehicles = {}
+BLLVehicles.passengers = {}
+
+-- temp data
 BLLVehicles.tick = 0
 BLLVehicles.reloadTick = 0
 
@@ -74,14 +79,14 @@ BLLVehicles.Spawn = function(x, y, dir, btype)
             end
 
             local slot = 1
-            for _, _ in pairs(BLLVehicles.tab) do
+            for _, _ in pairs(BLLVehicles.vehicles) do
                 slot = slot + 1
             end
             md.BLL.turretDir = 0
             md.BLL.slot = slot
 
             local id = vehicle:getId()
-            BLLVehicles.tab[id] = vehicle
+            BLLVehicles.vehicles[id] = vehicle
 
             --[[
             if args.lightbar or args.siren or args.alarm then
@@ -93,10 +98,80 @@ BLLVehicles.Spawn = function(x, y, dir, btype)
     end
 end
 
-BLLVehicles.Embark = function(vehicle, bandit)
+BLLVehicles.Remove = function(vehicle)
+    local vid = vehicle:getId()
+    BLLVehicles.DisembarkAll(vehicle)
+    vehicle:permanentlyRemove()
+    BLLVehicles.vehicles[vid] = nil
 end
 
-BLLVehicles.Disembark = function(vehicle)
+BLLVehicles.Embark = function(vehicle, bandit)
+    local gmd = GetBanditModData()
+
+    -- find first free sit
+    local seatNum = BLLVehicles.seatNum - 1
+    local seat
+    for i=0, seatNum do
+        if vehicle:isSeatInstalled(i) and not vehicle:isSeatOccupied(i) then
+            seat = i
+        end
+    end
+
+    if not seat then return end
+
+    -- add passenger
+    createPassenger(vehicle, seat)
+
+    -- mark bandit as in vehicle and remove from world
+    local brain = BanditBrain.Get(bandit)
+    gmd.Queue[brain.id].inVehicle = true
+    bandit:playSound("VehicleDoorOpen")
+    bandit:removeFromSquare()
+    bandit:removeFromWorld()
+
+    -- update passenger list
+    local vid = vehicle:getId()
+    if not BLLVehicles.passengers[vid] then
+        BLLVehicles.passengers[vid] = {}
+    end
+    BLLVehicles.passengers[vid][brain.id] = seat
+
+end
+
+BLLVehicles.DisembarkAll = function(vehicle)
+    local vid = vehicle:getId()
+    local passengers = BLLVehicles.passengers[vid]
+
+    local gmd = GetBanditModData()
+    if passengers then
+        for bid, seat in pairs(passengers) do
+            if gmd.Queue[bid] then
+                local brain = gmd.Queue[bid]
+                if brain and brain.inVehicle then
+                    -- remove passenger
+                    local character = vehicle:getCharacter(seat)
+                    vehicle:clearPassenger(seat)
+                    character:setVehicle(nil)
+                    character:setCollidable(true)
+                    character:Kill(nil)
+                    character:removeSaveFile()
+                    character:removeFromSquare()
+                    character:removeFromWorld()
+
+                    -- restore bandit
+                    local ex, ey = getVehicleBack(vehicle, 3)
+                    brain.bornCoords.x = ex
+                    brain.bornCoords.y = ey
+                    brain.bornCoords.z = 0
+                    brain.inVehicle = false
+                    sendClientCommand(getSpecificPlayer(0), 'Commands', 'SpawnRestore', brain)
+
+                    -- update passenger list
+                    passengers[bid] = nil
+                end
+            end
+        end
+    end    
 end
 
 local function sign(x)
@@ -124,19 +199,24 @@ local function predicateAmmoBox(item)
     return true
 end
 
+local function getVehicleBack(vehicle, l)
+    local vx = vehicle:getX()
+    local vy = vehicle:getY()
+    local vax = vehicle:getAngleX()
+    local vay = vehicle:getAngleY()
+    local vaz = vehicle:getAngleZ()
+    local vr = calculateVehicleRotation(vax, vay, vaz)
+    local rad = math.rad(vr)
+    local l = 2.5
+    local sx = vx - (l * math.cos(rad)) + ZombRandFloat(-0.5, 0.5)
+    local sy = vy - (l * math.sin(rad)) + ZombRandFloat(-0.5, 0.5)
+    return sx, sy
+end
+
 local function manageEngineSmoke(vehicle)
     if BLLVehicles.tick % 66 == 0 and vehicle:isEngineRunning() then
-        local vx = vehicle:getX()
-        local vy = vehicle:getY()
-        local vax = vehicle:getAngleX()
-        local vay = vehicle:getAngleY()
-        local vaz = vehicle:getAngleZ()
-        local vr = calculateVehicleRotation(vax, vay, vaz)
-        local rad = math.rad(vr)
-        local l = 2.5
-        local sx = vx - (l * math.cos(rad)) + ZombRandFloat(-0.5, 0.5)
-        local sy = vy - (l * math.sin(rad)) + ZombRandFloat(-0.5, 0.5)
 
+        local sx, sy = getVehicleBack(vehicle, 3)
         local effect = {}
         effect.x = sx
         effect.y = sy
@@ -149,9 +229,9 @@ local function manageEngineSmoke(vehicle)
     end
 end
 
-local function manageDriver(square, vehicle, driver)
+local function manageMovement(square, vehicle, driver)
 
-    local vehicleList = BLLVehicles.tab
+    local vehicleList = BLLVehicles.vehicles
     local vid = vehicle:getId()
     local vx = vehicle:getX()
     local vy = vehicle:getY()
@@ -198,40 +278,7 @@ local function manageDriver(square, vehicle, driver)
 
 end
 
-local function setDriver(square, vehicle)
-
-    local survDesc = SurvivorFactory.CreateSurvivor(SurvivorType.Neutral, false)
-    survDesc:setForename("Driver")
-    survDesc:setSurname("Driver")
-    survDesc:dressInNamedOutfit("Police")
-
-    local driver = IsoPlayer.new(square:getCell(), survDesc, square:getX(), square:getY(), square:getZ())
-
-    driver:setSceneCulled(false)
-    driver:setNPC(true)
-    driver:setGodMod(true)
-    driver:setInvisible(true)
-    driver:setGhostMode(true)
-
-    local vx = driver:getForwardDirection():getX()
-    local vy = driver:getForwardDirection():getY()
-    local forwardVector = Vector3f.new(vx, vy, 0)
-
-    if vehicle:getChunk() then
-        vehicle:setPassenger(0, driver, forwardVector)
-        driver:setVehicle(vehicle)
-        driver:setCollidable(false)
-    end
-
-    vehicle:tryStartEngine(true)
-    vehicle:engineDoStartingSuccess()
-    vehicle:engineDoRunning()
-    vehicle:setHeadlightsOn(true)
-    vehicle:setPhysicsActive(true)
-    return driver
-end
-
-local function manageGunner(square, vehicle, gunner)
+local function manageTurret(square, vehicle, gunner)
     local vx = vehicle:getX()
     local vy = vehicle:getY()
     local vz = vehicle:getZ()
@@ -348,34 +395,37 @@ local function manageGunner(square, vehicle, gunner)
     end
 end
 
-local function setGunner(square, vehicle)
+local function createPassenger (vehicle, seat)
+
+    if not vehicle:getChunk() then return end
+
     local survDesc = SurvivorFactory.CreateSurvivor(SurvivorType.Neutral, false)
-    survDesc:setForename("Gunner")
-    survDesc:setSurname("Gunner")
+    survDesc:setForename("Passenger")
+    survDesc:setSurname("Passenger")
     survDesc:dressInNamedOutfit("Police")
 
-    local gunner = IsoPlayer.new(square:getCell(), survDesc, square:getX(), square:getY(), square:getZ())
+    local passenger = IsoPlayer.new(square:getCell(), survDesc, square:getX(), square:getY(), square:getZ())
 
-    gunner:setSceneCulled(false)
-    gunner:setNPC(true)
-    gunner:setGodMod(true)
-    gunner:setInvisible(true)
-    gunner:setGhostMode(true)
+    passenger:setSceneCulled(false)
+    passenger:setNPC(true)
+    passenger:setGodMod(true)
+    passenger:setInvisible(true)
+    passenger:setGhostMode(true)
 
-    local vx = gunner:getForwardDirection():getX()
-    local vy = gunner:getForwardDirection():getY()
+    local vx = passenger:getForwardDirection():getX()
+    local vy = passenger:getForwardDirection():getY()
     local forwardVector = Vector3f.new(vx, vy, 0)
 
-    if vehicle:getChunk() then
-        vehicle:setPassenger(1, gunner, forwardVector)
-        gunner:setVehicle(vehicle)
-        gunner:setCollidable(false)
-    end
+    vehicle:setPassenger(1, passenger, forwardVector)
+    passenger:setVehicle(vehicle)
+    passenger:setCollidable(false)
 
-    return gunner
+    if not passenger:getVehicle() then return end
+
+    return passenger
 end
 
-local Manage = function(ticks)
+local manage = function(ticks)
 
     BLLVehicles.tick = ticks
 
@@ -384,39 +434,47 @@ local Manage = function(ticks)
     local player = getSpecificPlayer(0)
     if not player then return end
 
-    local vehicleList = BLLVehicles.tab
-    for id, vehicle in pairs(vehicleList) do
+    local vehicleList = BLLVehicles.vehicles
+    for vid, vehicle in pairs(vehicleList) do
         local controller = vehicle:getController()
         if not controller then
-            BLLVehicles.tab[id] = nil
-            break
-        end
-
-        if not vehicle:isSeatInstalled(0) then
-            BLLVehicles.tab[id] = nil
+            BLLVehicles.vehicles[vid] = nil
             break
         end
 
         local square = vehicle:getSquare()
         if not square then return end
 
+        -- update passanger after game reload
+        local passengers = BLLVehicles.passengers[vid]
+        for bid, seat in pairs(passengers) do
+            if not vehicle:getCharacter(seat) then
+                createPassenger(vehicle, seat)
+            end
+        end
+
         -- engine smoke
         manageEngineSmoke(vehicle)
 
         local driver = vehicle:getDriver()
         if driver and driver:isNPC() then
-            manageDriver(square, vehicle, driver)
-        else
-            setDriver(square, vehicle)
+            manageMovement(square, vehicle, driver)
         end
 
         local gunner = vehicle:getCharacter(1)
         if gunner and gunner:isNPC() then
-            manageGunner(square, vehicle, gunner)
-        else
-            setGunner(square, vehicle)
+            manageTurret(square, vehicle, gunner)
         end
     end
 end
 
-Events.OnTick.Add(Manage)
+initGlobalModData= function()
+    local globalData = ModData.getOrCreate("BanditLastLight")
+
+    BLLVehicles.vehicles = globalData.vehicles
+    BLLVehicles.passengers = globalData.passengers
+
+end
+
+Events.OnInitGlobalModData.Add(initGlobalModData)
+Events.OnTick.Add(manage)
