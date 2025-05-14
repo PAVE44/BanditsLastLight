@@ -86,11 +86,11 @@ BLLEvents.Explosion = function(params)
 
     -- wake up players
     BanditPlayer.WakeEveryone()
-    
+
     -- explosion and fire
 
     IsoFireManager.explode(cell, square, 100)
-    
+
     local effect = {}
     effect.x = square:getX()
     effect.y = square:getY()
@@ -100,12 +100,12 @@ BLLEvents.Explosion = function(params)
     effect.name = "explobig"
     effect.frameCnt = 17
     table.insert(BLLEffects.tab, effect)
-    
+
     -- light blast
     local colors = {r=1.0, g=0.5, b=0.5}
     local lightSource = IsoLightSource.new(x, y, 0, colors.r, colors.g, colors.b, 60, 10)
     getCell():addLamppost(lightSource)
-                
+
     local lightLevel = square:getLightLevel(0)
     if lightLevel < 0.95 and player:isOutside() then
         local px = player:getX()
@@ -141,7 +141,7 @@ BLLEvents.Explosion = function(params)
         if alpha > 1 then alpha = 1 end
         BLLTex.alpha = alpha
     end
-    
+
     -- junk placement
     BanditBaseGroupPlacements.Junk (x-4, y-4, 0, 6, 8, 13)
 

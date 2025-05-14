@@ -37,7 +37,7 @@ BLLCompany.Update = function()
                     tab[cid].members = 0
                 end
                 tab[cid].members = tab[cid].members + 1
-                
+
                 local bandit = cache[bandit.brain.id]
                 if bandit then
                     local brain = BanditBrain.Get(bandit)

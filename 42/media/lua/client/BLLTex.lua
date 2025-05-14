@@ -35,7 +35,7 @@ BLLTex.Blast = function()
         -- local y2 = yc + (BLLTex.tex:getHeight() / 2)
         UIManager.DrawTexture(BLLTex.tex, x1, y1, BLLTex.tex:getWidth() * 2, BLLTex.tex:getHeight() * 2, alpha)
     end
-    
+
     BLLTex.alpha = BLLTex.alpha - speed
     if BLLTex.alpha < 0 then BLLTex.alpha = 0 end
 end

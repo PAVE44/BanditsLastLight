@@ -4,7 +4,7 @@ BLLCursor.points = {}
 
 BLLCursor.sprites = {}
 for i = 1, 30 do
-    sprite = IsoSprite.new()
+    local sprite = IsoSprite.new()
     sprite:LoadFramesNoDirPageSimple('media/ui/FloorTileCursor.png')
     table.insert(BLLCursor.sprites, sprite)
 end
@@ -13,7 +13,6 @@ function BLLCursor:getPoints(sx, sy)
     local points = {}
     local sep = 4
     local isRoad = BLLRoads.IsRoad
-    local road = isRoad(sx, sy)
     local contE = isRoad(sx + 10, sy) and isRoad(sx + 20, sy)
     local contW = isRoad(sx - 10, sy) and isRoad(sx - 20, sy)
     local contS = isRoad(sx, sy + 10) and isRoad(sx, sy + 20)
@@ -52,7 +51,7 @@ function BLLCursor:getPoints(sx, sy)
         local w = 0
         local minx = sx
         local maxx = sx
-        
+
         for dx = sx - 15, sx + 15 do
             if isRoad(dx, sy) then
                 w = w + 1

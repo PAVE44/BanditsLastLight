@@ -25,11 +25,11 @@ BLLEvents.GroupStart = function(params)
     -- table.insert(apc, {x=12604, y=327, dir=IsoDirections.S, vtype="Base.M113_APC"})
     -- table.insert(apc, {x=12596, y=340, dir=IsoDirections.S, vtype="Base.M113_APC"})
     -- table.insert(apc, {x=12604, y=342, dir=IsoDirections.S, vtype="Base.M113_APC"})
-    
+
     for i=1, #apc do
         BLLQueueManager.Add("VehicleSpawn", apc[i], 2200)
     end
-    
+
     -- fade in
     BLLQueueManager.Add("FadeIn", {time=4}, 3000)
 end

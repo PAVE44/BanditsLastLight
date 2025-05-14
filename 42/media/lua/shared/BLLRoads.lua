@@ -41,7 +41,7 @@ BLLRoads.IsFree = function(x, y)
     for dx = x - 1, x + 1 do
         for dy = y - 1, y + 1 do
             --if not isRoad(dx, dy) then return false end
-            
+
             local square = cell:getGridSquare(dx, dy, 0)
             if not square or not square:isFree(false) then
                 return false
