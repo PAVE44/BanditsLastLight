@@ -1,0 +1,913 @@
+module Bandits {
+
+    sound BLL_Voice_Radio_1_Spotted_1
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/spotted_1.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Spotted_2
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/spotted_1.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Spotted_3
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/spotted_1.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Spotted_4
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/spotted_1.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Spotted_5
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/spotted_1.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Spotted_6
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/spotted_1.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_South_1
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/south.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_SouthEast_1
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/south-east.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_SouthWest_1
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/south-west.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_East_1
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/east.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_West_1
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/west.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_North_1
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/north.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_NorthEast_1
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/north-east.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_NorthWest_1
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/north-west.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Regroup_1
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/regroup_1.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Regroup_2
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/regroup_2.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Regroup_3
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/regroup_3.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Regroup_4
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/regroup_4.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Regroup_5
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/regroup_5.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Regroup_6
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/regroup_6.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Regroup_7
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/regroup_7.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Regroup_8
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/regroup_8.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Move_1
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/move_1.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Move_2
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/move_2.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Move_3
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/move_3.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Move_4
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/move_4.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Move_5
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/move_5.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Move_6
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/move_6.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Mandown_1
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/mandown_1.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Mandown_2
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/mandown_2.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Mandown_3
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/mandown_3.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Mandown_4
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/mandown_4.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Mandown_5
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/mandown_5.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Mandown_6
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/mandown_6.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Kill_1
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/kill_1.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Kill_2
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/kill_2.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Kill_3
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/kill_3.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Kill_4
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/kill_4.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Kill_5
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/kill_5.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Kill_6
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/kill_6.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Kill_7
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/kill_7.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Kill_8
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/kill_8.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Kill_9
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/kill_9.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Kill_10
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/kill_10.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Kill_11
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/kill_11.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Kill_12
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/kill_12.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Inposition_1
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/inposition_1.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Inposition_2
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/inposition_2.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Inposition_3
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/inposition_3.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Inposition_4
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/inposition_4.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Inposition_5
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/inposition_5.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Inposition_6
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/inposition_6.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_FormationLine_1
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/formation_line_1.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_FormationLine_2
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/formation_line_2.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_FormationFile_1
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/formation_file_1.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_FormationFile_2
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/formation_file_2.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_FormationCircle_1
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/formation_circle_1.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_FormationCircle_2
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/formation_circle_2.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Embark_1
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/formation_embark_1.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Embark_2
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/formation_embark_2.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Embark_3
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/formation_embark_3.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Embark_4
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/formation_embark_4.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Embark_5
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/formation_embark_5.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Embark_6
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/formation_embark_6.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Disembark_1
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/formation_disembark_1.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Disembark_2
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/formation_disembark_2.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Disembark_3
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/formation_disembark_3.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Disembark_4
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/formation_disembark_4.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Disembark_5
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/formation_disembark_5.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+    sound BLL_Voice_Radio_1_Disembark_6
+    {
+        category = Object,
+        clip
+        {
+            file = media/sound/voice_radio_1/formation_disembark_6.wav, 
+            is3D = false, 
+            distanceMin = 1,
+            distanceMax = 10, 
+            reverbFactor = 0.0, volume = 0.2, 
+        }
+    }
+
+}
