@@ -3,10 +3,15 @@ BLLVehicles = BLLVehicles or {}
 -- const
 BLLVehicles.speedMin = 2
 BLLVehicles.speedMax = 10
-BLLVehicles.reloadTime = 100
+BLLVehicles.turnAngle = 1.2
+BLLVehicles.reloadTime = 60
 BLLVehicles.ammoContainerPartName = "Browning_M2"
 BLLVehicles.ammoBoxItemTypeName = "Base.127x99mmClip"
 BLLVehicles.seatOptions = {0, 1, 3}
+
+BLLVehicles.soundEngineIdle = "BLL_M113_EngineIdle"
+BLLVehicles.soundEngineRun = "BLL_M113_EngineRun"
+BLLVehicles.soundTracks = "BLL_M113_Tracks"
 
 -- temp data
 BLLVehicles.tick = 0
@@ -280,20 +285,17 @@ local function findVehicle(vdata)
     end
 end
 
-local function manageEngineSmoke(vehicle)
-    if BLLVehicles.tick % 66 == 0 and vehicle:isEngineRunning() then
-
-        local sx, sy = getVehicleBack(vehicle, 3)
-        local effect = {}
-        effect.x = sx
-        effect.y = sy
-        effect.z = 0
-        effect.size = 600
-        effect.name = "smoke"
-        effect.frameCnt = 60
-        effect.repCnt = 5
-        table.insert(BLLEffects.tab, effect)
-    end
+local function addEngineSmoke(vehicle)
+    local sx, sy = getVehicleBack(vehicle, 3)
+    local effect = {}
+    effect.x = sx + ZombRandFloat(-0.5, 0.5)
+    effect.y = sy + ZombRandFloat(-0.5, 0.5)
+    effect.z = 0
+    effect.size = 600
+    effect.name = "smoke"
+    effect.frameCnt = 60
+    effect.repCnt = 5
+    table.insert(BLLEffects.tab, effect)
 end
 
 local function manageMovement(square, vehicle, driver)
@@ -322,32 +324,79 @@ local function manageMovement(square, vehicle, driver)
     local tvr = BanditUtils.CalcAngle (vx, vy, target.x, target.y)
     local delta = normalize(normalize(tvr) - normalize(vr))
 
+    local emitter = vehicle:getEmitter()
+
     if not vehicle:isEngineRunning() then
         vehicle:tryStartEngine(true)
         vehicle:engineDoStartingSuccess()
         vehicle:engineDoRunning()
+        addEngineSmoke(vehicle)
+        addEngineSmoke(vehicle)
+        print ("VEHICLE ACTION: ENGINE START")
+    elseif vehicle:hasHeadlights() and not vehicle:getHeadlightsOn() then
+        vehicle:setHeadlightsOn(true)
+        print ("VEHICLE ACTION: HEADLIGHTS ON")
     elseif dist < 2 then
         vehicle:setRegulator(false)
         vehicle:setRegulatorSpeed(0)
-    elseif math.abs(delta) < 2 then
-        local speed = dist / 2
+        if not emitter:isPlaying(BLLVehicles.soundEngineIdle) then                
+            emitter:playAmbientLoopedImpl(BLLVehicles.soundEngineIdle)
+            emitter:stopSoundByName(BLLVehicles.soundEngineRun)
+        end
+        emitter:stopSoundByName(BLLVehicles.soundTracks)
+
+        if BLLVehicles.tick % 240 == 0 then 
+            addEngineSmoke(vehicle)
+        end
+        print ("VEHICLE ACTION: STOP")
+    elseif math.abs(delta) < 3 then
+        local speed = dist
         if speed < BLLVehicles.speedMin then speed = BLLVehicles.speedMin end
         if speed > BLLVehicles.speedMax then speed = BLLVehicles.speedMax end
 
         vehicle:setRegulator(true)
         vehicle:setRegulatorSpeed(speed)
+
+        if not emitter:isPlaying(BLLVehicles.soundEngineRun) then
+            emitter:playAmbientLoopedImpl(BLLVehicles.soundEngineRun)
+            emitter:stopSoundByName(BLLVehicles.soundEngineIdle)
+        end
+        if not emitter:isPlaying(BLLVehicles.soundTracks) then
+            emitter:playAmbientLoopedImpl(BLLVehicles.soundTracks)
+        end
+
+        if BLLVehicles.tick % 60 == 0 then 
+            addEngineSmoke(vehicle)
+        end
+        print ("VEHICLE ACTION: MOVE, SPEED: " .. speed)
         -- print ("vid: " .. vid .. "slot: " .. slot)
     else
-        vehicle:setRegulator(true)
-        vehicle:setRegulatorSpeed(1)
-            local step = (delta > 0) and 1 or -1
+        if not emitter:isPlaying(BLLVehicles.soundEngineIdle) then                
+            emitter:playAmbientLoopedImpl(BLLVehicles.soundEngineIdle)
+            emitter:stopSoundByName(BLLVehicles.soundEngineRun)
+        end
+        if not emitter:isPlaying(BLLVehicles.soundTracks) then
+            emitter:playAmbientLoopedImpl(BLLVehicles.soundTracks)
+        end
+        if BLLVehicles.tick % 3 == 0 then 
+            vehicle:setRegulator(true)
+            vehicle:setRegulatorSpeed(1)
+            local step = (delta > 0) and BLLVehicles.turnAngle or -BLLVehicles.turnAngle
             local nva = (90 - normalize(vr + step)) % 360
             vehicle:setAngles(0, nva, 0)
+            print ("VEHICLE ACTION: TURN, DELTA: " .. delta)
+        end
+        if BLLVehicles.tick % 60 == 0 then 
+            addEngineSmoke(vehicle)
+        end
     end
 
 end
 
 local function manageTurret(square, vehicle, gunner)
+
+    if BLLVehicles.tick % 6 > 0 then return end
+    
     local vx = vehicle:getX()
     local vy = vehicle:getY()
     local vz = vehicle:getZ()
@@ -368,12 +417,13 @@ local function manageTurret(square, vehicle, gunner)
         ammoBox = ammoBoxItems:get(0)
         ammoMax = ammoBox:getMaxAmmo()
         ammoLeft = ammoBox:getCurrentAmmoCount()
-        
+
         if ammoLeft == ammoMax then -- new clip, needs to load it
             firing = false
             BLLVehicles.reloadTick = BLLVehicles.reloadTick + 1
             if BLLVehicles.reloadTick == BLLVehicles.reloadTime then
                 BLLVehicles.reloadTick = 0
+                ammoBox:setCurrentAmmoCount(ammoMax - 1)
                 firing = true
             end
         end
@@ -450,7 +500,7 @@ local function manageTurret(square, vehicle, gunner)
         md.BLL.lastAnimID = currentAnimID
     end
 
-    if firing and BLLVehicles.tick % 12 > 0 then
+    if firing then
         BanditProjectile.Add(vid, vx, vy, vz, aimAngle, 1)
         ammoBox:setCurrentAmmoCount(ammoLeft - 1)
 
@@ -468,13 +518,18 @@ local function manageTurret(square, vehicle, gunner)
     end
 end
 
+local function manageSound(vehicle)
+    
+    local emitter = vehicle:getEmitter()
+    local vehicleSpeed = vehicle:getCurrentSpeedKmHour()
+
+end
+
 local function manage(ticks)
 
     BLLVehicles.tick = ticks
     local test = BLLVehicles
     initGlobalModData()
-
-    if ticks % 6 > 0 then return end
 
     local player = getSpecificPlayer(0)
     if not player then return end
@@ -483,47 +538,45 @@ local function manage(ticks)
     for vid, vdata in pairs(vdataList) do
 
         local vehicle = findVehicle(vdata)
-        if not vehicle then 
-            -- BLLVehicles.vehicles[vid] = nil
-            break
-        end
+        if vehicle then 
+            -- vehicle:update()
 
-        local controller = vehicle:getController()
-        if not controller then
             -- BLLVehicles.vehicles[vid] = nil
-            break
-        end
 
-        -- update passanger after game reload
-        local passengers = BLLVehicles.passengers[vid] or {}
-        for bid, seat in pairs(passengers) do
-            if not vehicle:getCharacter(seat) then
-                if vehicle:isSeatInstalled(seat) and not vehicle:isSeatOccupied(seat) then
-                    createPassenger(vehicle, seat)
+            local controller = vehicle:getController()
+            if controller then
+                -- BLLVehicles.vehicles[vid] = nil
+
+                -- update passanger after game reload
+                local passengers = BLLVehicles.passengers[vid] or {}
+                for bid, seat in pairs(passengers) do
+                    if not vehicle:getCharacter(seat) then
+                        if vehicle:isSeatInstalled(seat) and not vehicle:isSeatOccupied(seat) then
+                            createPassenger(vehicle, seat)
+                        end
+                    end
                 end
+
+                local square = vehicle:getSquare()
+
+                local driver = vehicle:getDriver()
+                if driver and driver:isNPC() then
+                    manageMovement(square, vehicle, driver)
+                end
+
+                local gunner = vehicle:getCharacter(1)
+                if gunner and gunner:isNPC() then
+                    manageTurret(square, vehicle, gunner)
+                end
+
+
+                -- update gmd
+                vdataList[vid] = {
+                    x = vehicle:getX(), 
+                    y = vehicle:getY()
+                }
             end
         end
-
-        -- engine smoke
-        manageEngineSmoke(vehicle)
-
-        local square = vehicle:getSquare()
-
-        local driver = vehicle:getDriver()
-        if driver and driver:isNPC() then
-            manageMovement(square, vehicle, driver)
-        end
-
-        local gunner = vehicle:getCharacter(1)
-        if gunner and gunner:isNPC() then
-            manageTurret(square, vehicle, gunner)
-        end
-
-        -- update gmd
-        vdataList[vid] = {
-            x = vehicle:getX(), 
-            y = vehicle:getY()
-        }
     end
 end
 

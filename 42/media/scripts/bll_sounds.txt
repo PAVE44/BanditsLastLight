@@ -1,5 +1,44 @@
 module Bandits{
 
+    sound BLL_M113_EngineIdle
+    {
+        category = Vehicle,
+        clip
+        {
+            file = media/sound/m113_engine_idle.ogg, 
+            is3D = true, 
+            distanceMin = 1,
+            distanceMax = 50, 
+            reverbFactor = 0.1, volume = 0.6, 
+        }
+    }
+
+    sound BLL_M113_EngineRun
+    {
+        category = Vehicle,
+        clip
+        {
+            file = media/sound/m113_engine_run.ogg, 
+            is3D = true, 
+            distanceMin = 1,
+            distanceMax = 50, 
+            reverbFactor = 0.1, volume = 0.6, 
+        }
+    }
+
+    sound BLL_M113_Tracks
+    {
+        category = Vehicle,
+        clip
+        {
+            file = media/sound/m113_tracks.ogg, 
+            is3D = true, 
+            distanceMin = 1,
+            distanceMax = 35, 
+            reverbFactor = 0.1, volume = 0.7, 
+        }
+    }
+
     sound BLL_M2_Fire {
         category = Object, 
         loop = false
