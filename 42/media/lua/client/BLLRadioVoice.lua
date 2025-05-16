@@ -23,7 +23,6 @@ BLLRadioVoice.Sounds = {
     ["FORMATIONCIRCLE"] = {base = "BLL_Voice_Radio_1_FormationCircle", vcnt = 2},
     ["EMBARK"]          = {base = "BLL_Voice_Radio_1_Embark", vcnt = 6},
     ["DISEMBARK"]       = {base = "BLL_Voice_Radio_1_Disembark", vcnt = 6},
-
 }
 
 local function getVariant(name)
