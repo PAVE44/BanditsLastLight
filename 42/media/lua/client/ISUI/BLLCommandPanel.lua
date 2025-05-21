@@ -46,6 +46,13 @@ function BLLCommandPanel:initialise()
     end
     self:addChild(self.cancel)
 
+    local textures = {}
+    textures.team1 = getTexture("media/textures/ui/team_1.png")
+    textures.team2 = getTexture("media/textures/ui/team_2.png")
+    textures.team3 = getTexture("media/textures/ui/team_3.png")
+    textures.team4 = getTexture("media/textures/ui/team_4.png")
+
+    self.textures = textures
 end
 
 
@@ -64,6 +71,11 @@ function BLLCommandPanel:update()
 end
 
 function BLLCommandPanel:prerender()
+    local textures = self.textures
+    self:drawTextureScaled(textures.team1, 10, 10, 64, 64, 1, 1, 1, 1, 0)
+    self:drawTextureScaled(textures.team2, 208, 8, 64, 64, 1, 1, 1, 1, 1)
+    self:drawTextureScaled(textures.team3, 408, 8, 64, 64, 1, 1, 1, 1, 1)
+    self:drawTextureScaled(textures.team4, 608, 8, 64, 64, 1, 1, 1, 1, 1)
     ISPanel.prerender(self)
 end
 
@@ -73,7 +85,7 @@ function BLLCommandPanel:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
     o.borderColor = {r=0.4, g=0.4, b=0.4, a=1}
-    o.backgroundColor = {r=0, g=0, b=0, a=0.8}
+    o.backgroundColor = {r=0, g=0, b=0, a=0}
     o.width = width
     o.height = height
     o.moveWithMouse = true

@@ -33,6 +33,7 @@ BLLFormations.file = function(n)
     for i=1, n do
         table.insert(formation, {x=-i, y=0})
     end
+    return formation
 end
 
 BLLFormations.doublefile = function(n)
@@ -63,11 +64,18 @@ BLLFormations.circle = function(n)
     return formation
 end
 
-BLLFormations.Get = function (name, angleDegrees)
+BLLFormations.Get = function (cid, angleDegrees)
 
-    if not BLLFormations[name] then return end
+    local company = BLLCompany.Get()
+    local formationId = company[cid].formation
 
-    local formation = BLLFormations[name](21)
+    if not formationId or not BLLFormations[formationId] then return end
+
+    -- formation depends on the number of soldiers so we need to 
+    -- calculate the number of soldiers with the same formation and the same guardpost
+    local members = BLLCompany.GetMembersFormation(cid, formationId)
+
+    local formation = BLLFormations[formationId](members)
 
     if angleDegrees then
         formation = rotateFormation(formation, angleDegrees)

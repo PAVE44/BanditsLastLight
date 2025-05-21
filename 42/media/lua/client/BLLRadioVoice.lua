@@ -4,6 +4,10 @@ BLLRadioVoice = BLLRadioVoice or {}
 BLLRadioVoice.Events = {}
 
 BLLRadioVoice.Sounds = {
+    ["TEAM1"]           = {base = "BLL_Voice_Radio_1_Team1", vcnt = 1},
+    ["TEAM2"]           = {base = "BLL_Voice_Radio_1_Team2", vcnt = 1},
+    ["TEAM3"]           = {base = "BLL_Voice_Radio_1_Team3", vcnt = 1},
+    ["TEAM4"]           = {base = "BLL_Voice_Radio_1_Team4", vcnt = 1},
     ["SPOTTED"]         = {base = "BLL_Voice_Radio_1_Spotted", vcnt = 6},
     ["SOUTH"]           = {base = "BLL_Voice_Radio_1_South", vcnt = 1},
     ["SOUTHEAST"]       = {base = "BLL_Voice_Radio_1_SouthEast", vcnt = 1},
@@ -15,6 +19,7 @@ BLLRadioVoice.Sounds = {
     ["NORTHWEST"]       = {base = "BLL_Voice_Radio_1_NorthWest", vcnt = 1},
     ["REGROUP"]         = {base = "BLL_Voice_Radio_1_Regroup", vcnt = 8},
     ["MOVE"]            = {base = "BLL_Voice_Radio_1_Move", vcnt = 6},
+    ["HOLD"]            = {base = "BLL_Voice_Radio_1_Move", vcnt = 6},
     ["MANDOWN"]         = {base = "BLL_Voice_Radio_1_Mandown", vcnt = 6},
     ["KILL"]            = {base = "BLL_Voice_Radio_1_Kill", vcnt = 12},
     ["INPOSITION"]      = {base = "BLL_Voice_Radio_1_Inposition", vcnt = 6},
@@ -23,6 +28,12 @@ BLLRadioVoice.Sounds = {
     ["FORMATIONCIRCLE"] = {base = "BLL_Voice_Radio_1_FormationCircle", vcnt = 2},
     ["EMBARK"]          = {base = "BLL_Voice_Radio_1_Embark", vcnt = 6},
     ["DISEMBARK"]       = {base = "BLL_Voice_Radio_1_Disembark", vcnt = 6},
+    ["MOVEHOLD"]        = {base = "BLL_Voice_Radio_1_MoveHold", vcnt = 3},
+    ["MOVEADVANCE"]     = {base = "BLL_Voice_Radio_1_MoveAdvance", vcnt = 3},
+    ["MOVEALLCOSTS"]    = {base = "BLL_Voice_Radio_1_MoveAllCosts", vcnt = 3},
+    ["WEAPONSHOLD"]     = {base = "BLL_Voice_Radio_1_WeaponsHold", vcnt = 3},
+    ["WEAPONSFREE"]     = {base = "BLL_Voice_Radio_1_WeaponsFree", vcnt = 3},
+    ["WEAPONSSURPRESS"] = {base = "BLL_Voice_Radio_1_WeaponsSurpress", vcnt = 3},
 }
 
 local function getVariant(name)
@@ -47,7 +58,7 @@ end
 -- queue processor
 function BLLRadioVoice.Check()
     local player = getSpecificPlayer(0)
-    local emitter = player:getPlayer()
+    local emitter = player:getEmitter()
     for i, event in pairs(BLLRadioVoice.Events) do
         
         if not event.started then
@@ -55,7 +66,7 @@ function BLLRadioVoice.Check()
             emitter:playSound(event.variant)
         else
             if not emitter:isPlaying(event.variant) then
-                table.remove(BLLQueueManager.Events, i)
+                table.remove(BLLRadioVoice.Events, i)
             end
         end
         break

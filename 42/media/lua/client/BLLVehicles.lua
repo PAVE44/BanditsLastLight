@@ -177,6 +177,8 @@ BLLVehicles.Embark = function(vehicle, bandit)
     bandit:removeFromSquare()
     bandit:removeFromWorld()
 
+    BLLRadioVoice.Add("EMBARK")
+
     -- update passenger list
     if not BLLVehicles.passengers[vid] then
         BLLVehicles.passengers[vid] = {}
@@ -190,11 +192,15 @@ BLLVehicles.DisembarkAll = function(vehicle)
     local passengers = BLLVehicles.passengers[vid]
 
     local gmd = GetBanditModData()
+    
     if passengers then
+        local toRemove = {}
         for bid, seat in pairs(passengers) do
             if gmd.Queue[bid] then
                 local brain = gmd.Queue[bid]
                 if brain and brain.inVehicle then
+                    table.insert(toRemove, bid)
+
                     -- remove passenger
                     local character = vehicle:getCharacter(seat)
                     vehicle:clearPassenger(seat)
@@ -213,12 +219,14 @@ BLLVehicles.DisembarkAll = function(vehicle)
                     brain.bornCoords.y = ey
                     brain.bornCoords.z = 0
                     brain.inVehicle = false
-                    sendClientCommand(getSpecificPlayer(0), 'Commands', 'SpawnRestore', brain)
+                    sendClientCommand(getSpecificPlayer(0), 'Spawner', 'Restore', brain)
 
-                    -- update passenger list
-                    passengers[bid] = nil
+                    BLLRadioVoice.Add("DISEMBARK")
                 end
             end
+        end
+        for _, k in ipairs(toRemove) do
+            passengers[k] = nil
         end
     end    
 end
@@ -240,9 +248,9 @@ end
 
 local function predicateAmmoBox(item)
     if item:getFullType() == BLLVehicles.ammoBoxItemTypeName then 
-        if item:getCurrentAmmoCount() > 0 then
+        -- if item:getCurrentAmmoCount() > 0 then
             return true
-        end
+        -- end
     end
     return false
 end
@@ -332,10 +340,10 @@ local function manageMovement(square, vehicle, driver)
         vehicle:engineDoRunning()
         addEngineSmoke(vehicle)
         addEngineSmoke(vehicle)
-        print ("VEHICLE ACTION: ENGINE START")
+        print ("VEHICLE " .. vid .. " ACTION: ENGINE START")
     elseif vehicle:hasHeadlights() and not vehicle:getHeadlightsOn() then
         vehicle:setHeadlightsOn(true)
-        print ("VEHICLE ACTION: HEADLIGHTS ON")
+        print ("VEHICLE " .. vid .. "  ACTION: HEADLIGHTS ON")
     elseif dist < 2 then
         vehicle:setRegulator(false)
         vehicle:setRegulatorSpeed(0)
@@ -348,7 +356,7 @@ local function manageMovement(square, vehicle, driver)
         if BLLVehicles.tick % 240 == 0 then 
             addEngineSmoke(vehicle)
         end
-        print ("VEHICLE ACTION: STOP")
+        print ("VEHICLE " .. vid .. "  ACTION: STOP")
     elseif math.abs(delta) < 3 then
         local speed = dist
         if speed < BLLVehicles.speedMin then speed = BLLVehicles.speedMin end
@@ -368,7 +376,7 @@ local function manageMovement(square, vehicle, driver)
         if BLLVehicles.tick % 60 == 0 then 
             addEngineSmoke(vehicle)
         end
-        print ("VEHICLE ACTION: MOVE, SPEED: " .. speed)
+        print ("VEHICLE " .. vid .. "  ACTION: MOVE, SPEED: " .. speed)
         -- print ("vid: " .. vid .. "slot: " .. slot)
     else
         if not emitter:isPlaying(BLLVehicles.soundEngineIdle) then                
@@ -384,7 +392,7 @@ local function manageMovement(square, vehicle, driver)
             local step = (delta > 0) and BLLVehicles.turnAngle or -BLLVehicles.turnAngle
             local nva = (90 - normalize(vr + step)) % 360
             vehicle:setAngles(0, nva, 0)
-            print ("VEHICLE ACTION: TURN, DELTA: " .. delta)
+            print ("VEHICLE " .. vid .. "  ACTION: TURN, DELTA: " .. delta)
         end
         if BLLVehicles.tick % 60 == 0 then 
             addEngineSmoke(vehicle)
@@ -417,6 +425,9 @@ local function manageTurret(square, vehicle, gunner)
         ammoBox = ammoBoxItems:get(0)
         ammoMax = ammoBox:getMaxAmmo()
         ammoLeft = ammoBox:getCurrentAmmoCount()
+        
+        --debug
+        ammoBox:setCurrentAmmoCount(99)
 
         if ammoLeft == ammoMax then -- new clip, needs to load it
             firing = false
@@ -576,6 +587,9 @@ local function manage(ticks)
                     y = vehicle:getY()
                 }
             end
+        else
+            -- BLLVehicles.vehicles[vid] = nil
+            -- BLLVehicles.passengers[vid] = nil
         end
     end
 end

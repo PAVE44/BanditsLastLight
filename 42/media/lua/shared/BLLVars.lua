@@ -6,7 +6,7 @@ BLLVars.defaultVars = {
     HQSafe = true, -- removes zombies near HQ to make it safe in the initial part of the game
     HQTools = false, -- controls access to hq tools like bombing runs
     companyCommand = false, -- enables control over the squads for the player
-    convoySpeed = 0, -- establishes current convoy speed
+    convoySpeed = 0, -- establishes current convoy 
 }
 
 BLLVars.Set = function(key, val)
@@ -24,7 +24,7 @@ BLLVars.Init = function()
 
     for k, v in pairs(BLLVars.defaultVars) do
         if not globalData[k] then 
-            globalData[v] = v
+            globalData[k] = v
         end
     end
 

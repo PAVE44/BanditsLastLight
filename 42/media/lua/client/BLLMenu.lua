@@ -55,21 +55,95 @@ function BLLMenu.VehicleDisembark(player, vehicle)
     BLLVehicles.DisembarkAll(vehicle)
 end
 
-function BLLMenu.CommandPanel(player)
-    local screenWidth, screenHeight = getCore():getScreenWidth(), getCore():getScreenHeight()
-    local modalWidth, modalHeight = 600, 80
-    local modalX = 0
-    local modalY = screenHeight - modalHeight
-    local modal = BLLCommandPanel:new(modalX, modalY, modalWidth, modalHeight)
-    modal:initialise()
-    modal:addToUIManager()
+function BLLMenu.VoiceTest(player)
+    BLLRadioVoice.Add("TEAM1")
+    BLLRadioVoice.Add("MANDOWN")
 end
+
+-- debug end
+
+function BLLMenu.ChangeFormation(player, teamId, formationId)
+    BLLCompany.SetFormation(teamId, formationId)
+    local test = BLLCompany.Get()
+end
+
+function BLLMenu.ChangeMovement(player, teamId, movementId)
+    BLLCompany.SetMovement(teamId, movementId)
+    local test = BLLCompany.Get()
+end
+
+function BLLMenu.ChangeWeapons(player, teamId, weaponsId)
+    BLLCompany.SetWeapons(teamId, weaponsId)
+    local test = BLLCompany.Get()
+end
+
 
 function BLLMenu.WorldContextMenuPre(playerID, context, worldobjects, test)
     local world = getWorld()
     local player = getSpecificPlayer(playerID)
     local square = BanditCompatibility.GetClickedSquare()
     local vehicle = square:getVehicleContainer()
+
+    local teams = {
+        [1] = "Viper One",
+        [2] = "Raven Two",
+        [3] = "Iron Three",
+        [4] = "Shadow Four"
+    }
+
+    local formations = {
+        ["line"] = "Line",
+        ["file"] = "File",
+        ["circle"] = "Circle",
+    }
+
+    local movement = {
+        ["hold"] = "Hold position",
+        ["advance"] = "Advance",
+        ["allcosts"] = "Advance at all costs",
+    }
+
+    local weapons = {
+        ["hold"] = "Hold fire",
+        ["free"] = "Fire at will",
+        ["surpress"] = "Surpress",
+    }
+
+    for teamId, teamLabel in pairs(teams) do
+        local teamOption = context:addOption(teamLabel)
+        local teamMenu = context:getNew(context)
+
+        -- formation menu
+        local formationOption = teamMenu:addOption("Formation")
+        local formationMenu = teamMenu:getNew(context)
+
+        for formationId, formationLabel in pairs(formations) do
+            formationMenu:addOption(formationLabel, player, BLLMenu.ChangeFormation, teamId, formationId)
+        end
+        context:addSubMenu(formationOption, formationMenu)
+
+        -- movement menu
+        local movementOption = teamMenu:addOption("Movement")
+        local movementMenu = teamMenu:getNew(context)
+
+        for movementId, movementLabel in pairs(movement) do
+            movementMenu:addOption(movementLabel, player, BLLMenu.ChangeMovement, teamId, movementId)
+        end
+        context:addSubMenu(movementOption, movementMenu)
+
+        -- weapons menu
+        local weaponsOption = teamMenu:addOption("Weapons")
+        local weaponsMenu = teamMenu:getNew(context)
+
+        for weaponsId, weaponsLabel in pairs(weapons) do
+            weaponsMenu:addOption(weaponsLabel, player, BLLMenu.ChangeWeapons, teamId, weaponsId)
+        end
+        context:addSubMenu(weaponsOption, weaponsMenu)
+
+        context:addSubMenu(teamOption, teamMenu)
+
+        
+    end
 
     -- Debug options
     if isDebugEnabled() then
@@ -80,11 +154,7 @@ function BLLMenu.WorldContextMenuPre(playerID, context, worldobjects, test)
             context:addOption("Vehicle Remove", player, BLLMenu.VehicleRemove, vehicle)
         end
 
-        context:addOption("Command Panel", player, BLLMenu.CommandPanel)
-        context:addOption("Clear", player, BLLMenu.Clear, square)
-        context:addOption("Start", player, BLLMenu.Start)
-        context:addOption("Convoy", player, BLLMenu.Convoy)
-        context:addOption("Bridge", player, BLLMenu.Bridge)
+        context:addOption("Voice Test", player, BLLMenu.VoiceTest)
 
         local objectOption = context:addOption("Spawn Object")
         local objectMenu = context:getNew(context)
@@ -106,6 +176,20 @@ function BLLMenu.OnKeyPressed(keynum)
         local playerObj = getSpecificPlayer(0)
         local cursor = BLLCursor:new("vehicle", 4)
         getCell():setDrag(cursor, playerObj:getPlayerNum())
+    elseif keynum == Keyboard.KEY_T then
+        if BLLMenu.Modal then
+            BLLMenu.Modal:removeFromUIManager()
+            BLLMenu.Modal:close()
+            BLLMenu.Modal = nil
+        else
+            local screenWidth, screenHeight = getCore():getScreenWidth(), getCore():getScreenHeight()
+            local modalWidth, modalHeight = 600, 80
+            local modalX = 0
+            local modalY = screenHeight - modalHeight
+            BLLMenu.Modal = BLLCommandPanel:new(modalX, modalY, modalWidth, modalHeight)
+            BLLMenu.Modal:initialise()
+            BLLMenu.Modal:addToUIManager()
+        end
     end
 end
 

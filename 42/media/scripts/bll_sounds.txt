@@ -35,7 +35,7 @@ module Bandits{
             is3D = true, 
             distanceMin = 1,
             distanceMax = 35, 
-            reverbFactor = 0.1, volume = 0.7, 
+            reverbFactor = 0.1, volume = 0.6, 
         }
     }
 

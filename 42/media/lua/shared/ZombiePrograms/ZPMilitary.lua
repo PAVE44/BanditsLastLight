@@ -45,13 +45,22 @@ ZombiePrograms.Military.Main = function(bandit)
         walkType = "WalkAim"
     end
 
-    local formation = BLLFormations.Get("line", dangle)
     local brain = BanditBrain.Get(bandit)
+    local formation = BLLFormations.Get(brain.cid, dangle)
+    
     local idx = brain.idx
 
-    local dx = mx + formation[idx].x
-    local dy = my + formation[idx].y
-    local dz = mz
+    local dx, dy, dz
+
+    if idx and formation[idx] then
+        dx = mx + formation[idx].x
+        dy = my + formation[idx].y
+        dz = mz
+    else
+        dx = mx
+        dy = my
+        dz = mz
+    end
 
     -- print (brain.id .. " " .. idx .. " DX: " .. dx .. " DY: " .. dy)
 
